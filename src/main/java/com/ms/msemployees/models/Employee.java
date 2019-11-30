@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,9 @@ public class Employee implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private int id;
 	
-	String name;
-	String email;
+	@NotNull
+	private String name;
+	@NotNull
+	private String email;
 	
 }
