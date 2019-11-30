@@ -1,5 +1,7 @@
 package com.ms.msemployees.dtos;
 
+import javax.validation.constraints.NotEmpty;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EmployeeDTO {
 	
-	 String name;
-	 String email;
+	 @NotEmpty
+	 private String name;
+	 @NotEmpty
+	 private String email;
 
 }
