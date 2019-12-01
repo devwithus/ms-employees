@@ -3,6 +3,8 @@ package com.ms.msemployees.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import com.ms.msemployees.models.Employee;
 import com.ms.msemployees.repositories.EmployeeRepository;
 
 @Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Autowired
@@ -35,6 +38,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Optional<Employee> findByEmail(String email) {
 		// TODO Auto-generated method stub
 		return emprepo.findByEmail(email);
+	}
+
+	@Override
+	public Optional<Employee> findById(int id) {
+		// TODO Auto-generated method stub
+		return emprepo.findById(id);
+	}
+
+	@Override
+	public Employee save(Employee emp) {
+		// TODO Auto-generated method stub
+		return emprepo.save(emp);
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		emprepo.deleteById(id);
 	}
 
 }
