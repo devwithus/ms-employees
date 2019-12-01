@@ -55,7 +55,6 @@ public class MsEmployeesServicesApplicationTests {
     public void whenFindById()
     {
         Employee empOne   = new Employee(1, "John", "howtodoinjava@gmail.com");
-        
         Mockito.when(emprepo.findById(1)).thenReturn(Optional.of(empOne));
          
         //test
