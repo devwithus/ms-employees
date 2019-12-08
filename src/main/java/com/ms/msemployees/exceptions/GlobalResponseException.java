@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +37,17 @@ public class GlobalResponseException extends ResponseEntityExceptionHandler {
 					.map(error -> error.getObjectName()+ " : " +error.getDefaultMessage())
 					.collect(Collectors.toList());
 		
-		ResponseError err = new ResponseError(LocalDateTime.now(), "Validation errors" ,details);
+		ResponseError err = new ResponseError(LocalDateTime.now(), "Validation Errors" ,details);
+		
+		return ResponseMapper.errorToEntity(err,HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<?> handleConstraintViolationException(Exception ex, WebRequest request) {
+		
+		List<String> details = new ArrayList<String>();
+		details.add(ex.getMessage());
+		ResponseError err = new ResponseError(LocalDateTime.now(), "Constraint Violation" ,details);
 		
 		return ResponseMapper.errorToEntity(err,HttpStatus.BAD_REQUEST);
 	}
@@ -46,10 +58,11 @@ public class GlobalResponseException extends ResponseEntityExceptionHandler {
 		List<String> details = new ArrayList<String>();
 		details.add(ex.getMessage());
 		log.info("ResourceNotFoundException : "+ex.getMessage());
-		ResponseError err = new ResponseError(LocalDateTime.now(), "Bad Request!" ,details);
+		ResponseError err = new ResponseError(LocalDateTime.now(), "Resource NotFound" ,details);
 		
 		return ResponseMapper.errorToEntity(err,HttpStatus.BAD_REQUEST);
 	}
+	
 	
 	
 	
