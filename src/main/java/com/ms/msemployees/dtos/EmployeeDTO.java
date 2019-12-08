@@ -3,6 +3,8 @@ package com.ms.msemployees.dtos;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import com.ms.msemployees.cannotations.UniqName;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,10 +16,11 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class EmployeeDTO {
 
-	 @NotEmpty
+	 @UniqName
+	 @NotEmpty(message = "{name.empty}")
 	 private String name;
-	 @NotEmpty
-	 @Email
+	 @NotEmpty(message = "{email.empty}")
+	 @Email(message = "{email.format}")
 	 private String email;
 
 }
