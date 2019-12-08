@@ -3,8 +3,11 @@ package com.ms.msemployees.controllers;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,9 +45,10 @@ public class EmployeeController {
 		return ResponseEntity.ok().body(emp);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping(value="/employees")
-	ResponseEntity<?> addEmployee(@RequestBody EmployeeDTO empdto) {
-		Employee emp = EmployeeMapper.dtoToEntity(empdto);
+	ResponseEntity<?> addEmployee(@Valid @RequestBody EmployeeDTO empdto) {
+		Employee emp      = EmployeeMapper.dtoToEntity(empdto);
 		Employee addedemp = empservice.save(emp);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 						                .path("/{id}")
@@ -53,8 +57,9 @@ public class EmployeeController {
 		return ResponseEntity.created(location).build();
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping(value="/employee/{id}")
-	ResponseEntity<Employee> updateEmployee(@PathVariable("id") int id, @RequestBody EmployeeDTO empdto) {
+	ResponseEntity<Employee> updateEmployee(@PathVariable("id") int id, @Valid @RequestBody EmployeeDTO empdto) {
 
 		Employee emp = empservice.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Employee Not Found with ID :"+id));
@@ -66,6 +71,7 @@ public class EmployeeController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping(value="/employee/{id}")
 	ResponseEntity<String> deleteEmployee(@PathVariable("id") int id) {
 		Employee emp = empservice.findById(id)
