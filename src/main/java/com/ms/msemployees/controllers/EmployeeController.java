@@ -4,10 +4,12 @@ import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,7 @@ import com.ms.msemployees.services.EmployeeService;
 
 @RestController
 @RequestMapping(value="/api")
+@Validated
 public class EmployeeController {
 
 	@Autowired
@@ -37,7 +40,7 @@ public class EmployeeController {
 	}
 	
 	@GetMapping(value="/employee/{id}")
-	ResponseEntity<Employee> getById(@PathVariable("id") int id) {
+	ResponseEntity<Employee> getById(@PathVariable("id") @Min(1) int id) {
 		
 		Employee emp = empservice.findById(id)
 				                 .orElseThrow(()->new ResourceNotFoundException("Employee Not Found with ID :"+id));
@@ -59,7 +62,7 @@ public class EmployeeController {
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping(value="/employee/{id}")
-	ResponseEntity<Employee> updateEmployee(@PathVariable("id") int id, @Valid @RequestBody EmployeeDTO empdto) {
+	ResponseEntity<Employee> updateEmployee(@PathVariable("id")  @Min(1) int id, @Valid @RequestBody EmployeeDTO empdto) {
 
 		Employee emp = empservice.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Employee Not Found with ID :"+id));
@@ -73,7 +76,7 @@ public class EmployeeController {
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping(value="/employee/{id}")
-	ResponseEntity<String> deleteEmployee(@PathVariable("id") int id) {
+	ResponseEntity<String> deleteEmployee(@PathVariable("id") @Min(1) int id) {
 		Employee emp = empservice.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Employee Not Found with ID :"+id));
 		
