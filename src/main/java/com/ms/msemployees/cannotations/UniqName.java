@@ -18,7 +18,7 @@ import com.ms.msemployees.validation.validators.UniqNameValidator;
 public @interface UniqName {
 
 	String message() default "{name.uniq}";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
+    	Class<?>[] groups() default {};
+    	Class<? extends Payload>[] payload() default {};
 	
 }
