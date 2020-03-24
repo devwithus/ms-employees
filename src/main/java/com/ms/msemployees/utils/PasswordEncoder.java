@@ -13,8 +13,7 @@ public class PasswordEncoder {
 		
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
-		System.out.println(passwordEncoder.encode("adam@2020@"));
-		System.out.println(passwordEncoder.encode("admin@2020@"));
+		System.out.println(passwordEncoder.encode("user@2020@"));
 
 	}
 

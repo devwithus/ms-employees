@@ -14,7 +14,7 @@ public class UserMapper {
 		
 		List<SimpleGrantedAuthority> authorities = user.getRoles()
 												.stream()
-												.map(role -> new SimpleGrantedAuthority("ROLE_"+role))
+												.map(role -> new SimpleGrantedAuthority("ROLE_"+role.getName()))
 												.collect(Collectors.toList());
 		
 		

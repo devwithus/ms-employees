@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
@@ -26,15 +27,22 @@ public class MultipleSecurityAdapters{
 		@Autowired
 		private PasswordEncoder passwordEncoder;
 		
+		@Autowired
+		private UserDetailsService userDetailsService;
+		
 		
 		@Override
 		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 			// TODO Auto-generated method stub
 			
-			auth.inMemoryAuthentication()
-			    .withUser("adam").password(passwordEncoder.encode("adam@2020@")).roles("USER")
+			/*auth.inMemoryAuthentication()
+			    .withUser("user").password("$2a$10$ak3CkbSe.NI2kutm6ASE9Oih.uNynWVuXSLHGL509wk.T.3hGsWqi").authorities("ROLE_USER")
 			    .and()
-			    .withUser("admin").password(passwordEncoder.encode("admin@2020@")).roles("USER","ADMIN");
+			    .withUser("admin").password("$2a$10$ak3CkbSe.NI2kutm6ASE9Oih.uNynWVuXSLHGL509wk.T.3hGsWqi").authorities("ROLE_MANAGER","ROLE_ADMIN");
+			*/
+			
+			auth.userDetailsService(userDetailsService)
+			    .passwordEncoder(passwordEncoder);
 			
 		}
 		
@@ -52,6 +60,7 @@ public class MultipleSecurityAdapters{
 			    .and()
 			    .httpBasic();
 		}
+	
 	
 	}
 
