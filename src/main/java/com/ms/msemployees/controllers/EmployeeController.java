@@ -26,7 +26,12 @@ import com.ms.msemployees.mappers.EmployeeMapper;
 import com.ms.msemployees.models.Employee;
 import com.ms.msemployees.services.EmployeeService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
+@Api(value = "Employees MS", description = "Microservice For Employees Management")
 @RequestMapping(value="/api")
 @Validated
 public class EmployeeController {
@@ -34,13 +39,16 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService empservice;
 	
+	
+	@ApiOperation(value = "View a list of available employees", response = Iterable.class)
 	@GetMapping(value="/employees")
 	List<Employee> getAll(){
 		return empservice.getAllEmployees();
 	}
 	
+	@ApiOperation(value = "View employee details by ID", response = Employee.class)
 	@GetMapping(value="/employee/{id}")
-	ResponseEntity<Employee> getById(@PathVariable("id") @Min(1) int id) {
+	ResponseEntity<Employee> getById(@ApiParam(value = "Employee ID") @PathVariable("id") @Min(1) int id) {
 		
 		Employee emp = empservice.findById(id)
 				                 .orElseThrow(()->new ResourceNotFoundException("Employee Not Found with ID :"+id));
@@ -48,9 +56,10 @@ public class EmployeeController {
 		return ResponseEntity.ok().body(emp);
 	}
 	
+	@ApiOperation(value = "Add new Employee")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping(value="/employees")
-	ResponseEntity<?> addEmployee(@Valid @RequestBody EmployeeDTO empdto) {
+	ResponseEntity<?> addEmployee(@ApiParam(value = "Employee DTO object") @Valid @RequestBody EmployeeDTO empdto) {
 		Employee emp      = EmployeeMapper.dtoToEntity(empdto);
 		Employee addedemp = empservice.save(emp);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -60,9 +69,10 @@ public class EmployeeController {
 		return ResponseEntity.created(location).build();
 	}
 	
+	@ApiOperation(value = "Update Employee by ID")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping(value="/employee/{id}")
-	ResponseEntity<Employee> updateEmployee(@PathVariable("id")  @Min(1) int id, @Valid @RequestBody EmployeeDTO empdto) {
+	ResponseEntity<Employee> updateEmployee(@ApiParam(value = "Employee ID") @PathVariable("id")  @Min(1) int id, @ApiParam(value = "Employee DTO object") @Valid @RequestBody EmployeeDTO empdto) {
 
 		Employee emp = empservice.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Employee Not Found with ID :"+id));
@@ -74,9 +84,10 @@ public class EmployeeController {
 		
 	}
 	
+	@ApiOperation(value = "Delete Employee by ID")
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping(value="/employee/{id}")
-	ResponseEntity<String> deleteEmployee(@PathVariable("id") @Min(1) int id) {
+	ResponseEntity<String> deleteEmployee(@ApiParam(value = "Employee ID") @PathVariable("id") @Min(1) int id) {
 		Employee emp = empservice.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Employee Not Found with ID :"+id));
 		
