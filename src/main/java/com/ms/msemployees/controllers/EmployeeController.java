@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ms.msemployees.dtos.EmployeeDTO;
+import com.ms.msemployees.dtos.UEmployeeDTO;
 import com.ms.msemployees.exceptions.ResourceNotFoundException;
 import com.ms.msemployees.mappers.EmployeeMapper;
 import com.ms.msemployees.models.Employee;
@@ -72,12 +73,12 @@ public class EmployeeController {
 	@ApiOperation(value = "Update Employee by ID")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping(value="/employee/{id}")
-	ResponseEntity<Employee> updateEmployee(@ApiParam(value = "Employee ID") @PathVariable("id")  @Min(1) int id, @ApiParam(value = "Employee DTO object") @Valid @RequestBody EmployeeDTO empdto) {
+	ResponseEntity<Employee> updateEmployee(@ApiParam(value = "Employee ID") @PathVariable("id")  @Min(1) int id, @ApiParam(value = "Employee DTO object") @Valid @RequestBody UEmployeeDTO empdto) {
 
 		Employee emp = empservice.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Employee Not Found with ID :"+id));
 		
-		Employee empu = EmployeeMapper.dtoToEntity(empdto);
+		Employee empu = EmployeeMapper.udtoToEntity(empdto);
 		empu.setId(emp.getId());
 		empservice.save(empu);
 		return ResponseEntity.ok().body(empu);

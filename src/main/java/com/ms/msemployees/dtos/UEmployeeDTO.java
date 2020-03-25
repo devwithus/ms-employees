@@ -3,8 +3,6 @@ package com.ms.msemployees.dtos;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import com.ms.msemployees.cannotations.UniqName;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -16,11 +14,10 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "Employee DTO class")
-public class EmployeeDTO {
+@ApiModel(description = "Employee DTO class For Update")
+public class UEmployeeDTO {
 
 	 @ApiModelProperty(notes = "employee DTO NAME")
-	 @UniqName
 	 @NotEmpty(message = "{name.empty}")
 	 private String name;
 	 

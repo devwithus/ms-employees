@@ -37,13 +37,13 @@ public class MsEmployeesApplicationTests {
 	public void whenFindById() throws Exception {
 	  
 		Employee empOne   = new Employee(1, "John", "john-depp@gmail.com");
-        	Mockito.when(empsrv.findById(1)).thenReturn(Optional.of(empOne));
-        
-        	mvc.perform(
-        		get("/api/employee/1")
-        		.accept(MediaType.APPLICATION_JSON))
-        		.andExpect(status().isOk())
-        		.andExpect(content().json("{ 'name': 'John' }"));
+    	Mockito.when(empsrv.findById(1)).thenReturn(Optional.of(empOne));
+    
+    	mvc.perform(
+    		get("/api/employee/1")
+    		.accept(MediaType.APPLICATION_JSON))
+    		.andExpect(status().isOk())
+    		.andExpect(content().json("{ 'name': 'John' }"));
 		
 	}
 	
@@ -51,13 +51,13 @@ public class MsEmployeesApplicationTests {
 	public void whenFindByIdv2() throws Exception {
 	  
 		Employee empOne   = new Employee(1, "John", "john-depp@gmail.com");
-        	Mockito.when(empsrv.findById(3)).thenReturn(Optional.of(empOne));
-        
-       		mvc.perform(
-        		get("/api/employee/3")
-        		.accept(MediaType.APPLICATION_JSON))
-        		.andExpect(status().isOk())
-        		.andExpect(jsonPath("$.name",is(empOne.getName())));
+    	Mockito.when(empsrv.findById(3)).thenReturn(Optional.of(empOne));
+    
+   		mvc.perform(
+    		get("/api/employee/3")
+    		.accept(MediaType.APPLICATION_JSON))
+    		.andExpect(status().isOk())
+    		.andExpect(jsonPath("$.name",is(empOne.getName())));
 		
 	}
 

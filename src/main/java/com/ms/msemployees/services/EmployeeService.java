@@ -12,5 +12,6 @@ public interface EmployeeService {
 	Optional<Employee> findByName(String name);
 	Optional<Employee> findByEmail(String email);
 	Employee save(Employee emp);
+	void update(Employee emp);
 	void delete(int id);
 }
